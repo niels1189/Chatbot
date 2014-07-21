@@ -34,6 +34,7 @@ public final class chatbot extends JavaPlugin implements Listener {
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onChat (AsyncPlayerChatEvent chat){
 		final Player p = chat.getPlayer();
@@ -57,12 +58,14 @@ public final class chatbot extends JavaPlugin implements Listener {
 		
 		if (checkmessage.contains("how") || checkmessage.contains("can"))
 	  	{
-			if (checkmessage.contains("purchase") || checkmessage.contains("have") || checkmessage.contains("give") || checkmessage.contains("buy") || checkmessage.contains("get") && checkmessage.contains("vip")) {
-				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new BukkitRunnable(){
-		            public void run(){
-		            	p.sendMessage("[§6ChatBot§f]" + ChatColor.DARK_AQUA + " You can purchase VIP at the store (/store)");
-		            }
-		        }, 5);
+			if (checkmessage.contains("purchase") || checkmessage.contains("have") || checkmessage.contains("give") || checkmessage.contains("buy") || checkmessage.contains("get")) {
+				if (checkmessage.contains("vip")) {
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new BukkitRunnable(){
+						public void run(){
+							p.sendMessage("[§6ChatBot§f]" + ChatColor.DARK_AQUA + " You can purchase VIP at the store (/store)");
+						}
+					}, 5);
+				}
 			}
 		  
 			if (checkmessage.contains("set") && checkmessage.contains("home"))
@@ -93,7 +96,7 @@ public final class chatbot extends JavaPlugin implements Listener {
 			p.sendMessage("[§6ChatBot§f] §a!help - List Commands");
 			p.sendMessage("[§6ChatBot§f] §a!staff - List of Staff members");
 			p.sendMessage("[§6ChatBot§f] §a!btc - Current Value of Bitcoins");
-			p.sendMessage("[§6ChatBot§f] §a!vip - List of online VIP's");
+			p.sendMessage("[§6ChatBot§f] §c!vip - List of online VIP's");
 		}
 		
 		
@@ -151,7 +154,7 @@ public final class chatbot extends JavaPlugin implements Listener {
 					
 					String[] parts = inputLine.split(",");
 					String[] BTCValue = parts[1].split("\"");
-					p.sendMessage("1 BTC = " + BTCValue[3] + "$");
+					p.sendMessage(ChatColor.GOLD + "1 BTC is worth " + BTCValue[3] + "$");
 					
 				}
 			} catch (IOException e1) {
