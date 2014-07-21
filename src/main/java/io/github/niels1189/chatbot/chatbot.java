@@ -221,8 +221,14 @@ public final class chatbot extends JavaPlugin implements Listener {
 				}
 			}
 			for (String value : this.VipList.values) {
-				p.sendMessage("[§6ChatBot§f] §a- " + value);
+				if(getServer().getPlayer(value) != null){
+    				p.sendMessage("[§6ChatBot§f] §a- " + ChatColor.GREEN + value);
+    			}else{
+    				p.sendMessage("[§6ChatBot§f] §a- " + ChatColor.RED + value);
+    			}
+				
 			}
+			chat.setCancelled(true);
 		}
 		
 		
@@ -248,17 +254,12 @@ public final class chatbot extends JavaPlugin implements Listener {
 					String[] parts = inputLine.split(",");
 					String[] BTCValue = parts[1].split("\"");
 					p.sendMessage(ChatColor.GOLD + "1 BTC is worth " + BTCValue[3] + "$");
-					
 				}
 			} catch (IOException e1) {
 		        e1.printStackTrace();
 		    }
-			
-			
 		}
-	
-	
-	
+		chat.setCancelled(true);
 	}
 	
 	
@@ -276,11 +277,14 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 		if (args.length == 1 && args[0].equalsIgnoreCase("reload") && p.hasPermission("chatbot.reload")) {
 			this.reloadConfig();
 			this.saveConfig();
+			String pluginFolder = this.getDataFolder().getAbsolutePath();
+			this.VipList = new ListStore(new File(pluginFolder + File.separator + "Viplist.txt"));
+			this.VipList.load();
 			Bukkit.getLogger().info("[ChatBot] Config Reloaded!");
 			p.sendMessage("[§6ChatBot§f] §aConfig Reloaded!");
 		}
 		else {
-			p.sendMessage(ChatColor.RED + "Chatbot is up and working!");
+			p.sendMessage(ChatColor.GREEN + "Chatbot " + ChatColor.RED + "is up and working!");
 			p.sendMessage(ChatColor.GOLD + "Version: " + ChatColor.GREEN + "1.2");
 			p.sendMessage(ChatColor.GOLD + "Author: " + ChatColor.GREEN + ChatColor.ITALIC + "Niels1189");
 			p.sendMessage(ChatColor.GOLD + "Try using !help");
