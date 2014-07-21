@@ -7,3 +7,7 @@ description: -no desc-
 commands:
   chatbot:
     description: Chatbot Version & Author
+    
+permissions:
+    chatbot.reload:
+        description: Allows you to reload the plugin & config

@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,7 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public final class chatbot extends JavaPlugin implements Listener {
-	
 	protected ListStore VipList;
 	
 	@Override
@@ -269,13 +269,22 @@ public final class chatbot extends JavaPlugin implements Listener {
 	
 
 public boolean onCommand(CommandSender s, Command cmd, String label, String[] args) {
-	if (cmd.getName().equalsIgnoreCase("chatbot"))	{
-		
 	Player p = (Player) s;
-	p.sendMessage(ChatColor.RED + "Chatbot is up and working!");
-	p.sendMessage(ChatColor.GOLD + "Version: " + ChatColor.GREEN + "1.2");
-	p.sendMessage(ChatColor.GOLD + "Author: " + ChatColor.GREEN + ChatColor.ITALIC + "Niels1189");
-	p.sendMessage(ChatColor.GOLD + "Try using !help");
+	
+	
+	if (cmd.getName().equalsIgnoreCase("chatbot"))	{
+		if (args.length == 1 && args[0].equalsIgnoreCase("reload") && p.hasPermission("chatbot.reload")) {
+			this.reloadConfig();
+			this.saveConfig();
+			Bukkit.getLogger().info("[ChatBot] Config Reloaded!");
+			p.sendMessage("[§6ChatBot§f] §aConfig Reloaded!");
+		}
+		else {
+			p.sendMessage(ChatColor.RED + "Chatbot is up and working!");
+			p.sendMessage(ChatColor.GOLD + "Version: " + ChatColor.GREEN + "1.2");
+			p.sendMessage(ChatColor.GOLD + "Author: " + ChatColor.GREEN + ChatColor.ITALIC + "Niels1189");
+			p.sendMessage(ChatColor.GOLD + "Try using !help");
+		}
 	}
 	return false;
 }
