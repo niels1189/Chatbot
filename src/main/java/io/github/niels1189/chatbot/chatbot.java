@@ -219,9 +219,9 @@ public final class chatbot extends JavaPlugin implements Listener {
 						this.VipList.save();
 					}
 				}
-				for (String value : this.VipList.values) {
-					p.sendMessage("[§6ChatBot§f] §a- " + value);
-				}
+			}
+			for (String value : this.VipList.values) {
+				p.sendMessage("[§6ChatBot§f] §a- " + value);
 			}
 		}
 		
