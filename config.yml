@@ -30,3 +30,8 @@ Staff:
 # Dev | Niels1189 will turn into &6Dev | &cNiels1189 if UseRanks is true & CheckOnline is true and Niels1189 is offline
 # Dev | Niels1189 will turn into &cDev | Niels1189 if UseRanks is false & CheckOnline is true and Niels1189 is offline
  
+ 
+ 
+# Permission all VIP's / donators have
+ 
+VIPpermission: vip.perms

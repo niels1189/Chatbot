@@ -2,9 +2,9 @@ package io.github.niels1189.chatbot;
 
 import java.net.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -18,6 +18,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public final class chatbot extends JavaPlugin implements Listener {
+	
+	protected ListStore VipList;
+	
 	@Override
 	public void onEnable() {
 		PluginDescriptionFile p = this.getDescription();
@@ -25,13 +28,87 @@ public final class chatbot extends JavaPlugin implements Listener {
 		getServer().getPluginManager().registerEvents(this, this);
 		this.getConfig().options().copyDefaults(true);
 		saveDefaultConfig();
+		
+		String pluginFolder = this.getDataFolder().getAbsolutePath();
+		this.VipList = new ListStore(new File(pluginFolder + File.separator + "Viplist.txt"));
+		this.VipList.load();
+		
 	}
  
 	@Override
 	public void onDisable() {
 		saveDefaultConfig();
+		this.VipList.save();
 		getLogger().log(Level.INFO, "Chat Bot Plugin Disabled");
 	}
+	
+	
+	
+	
+	public class ListStore {
+		private File storageFile;
+		private ArrayList<String> values;
+		
+		public ListStore(File file){
+			this.storageFile = file;
+			this.values = new ArrayList<String>();
+			
+			if (this.storageFile.exists() == false) {
+				try {
+					this.storageFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		
+		public void load() {
+			try {
+				DataInputStream input = new DataInputStream(new FileInputStream(this.storageFile));
+				BufferedReader reader = new BufferedReader (new InputStreamReader(input));
+				String line;
+				
+				while ((line = reader.readLine()) != null) {
+					if (this.values.contains(line) == false) {
+						this.values.add(line);
+					}
+				}
+				
+				reader.close();
+				input.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public void save() {
+			try {
+				FileWriter stream = new FileWriter(this.storageFile);
+				BufferedWriter out = new BufferedWriter(stream);
+				for (String value : this.values) {
+					out.write(value);
+					out.newLine();
+				}
+				
+				out.close();
+				stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public void add(String value) {
+			this.values.add(value);
+		}
+		
+		public boolean contains(String value) {
+			return this.values.contains(value);
+		}
+		
+	}
+	
+		
 	
 	
 	@SuppressWarnings("deprecation")
@@ -76,15 +153,7 @@ public final class chatbot extends JavaPlugin implements Listener {
 						}
 					}, 5);
 				}
-	  	}
-		
-		
-		
-		
-		
-		
-		
-		
+	  	}		
 		
 		
 		
@@ -96,7 +165,8 @@ public final class chatbot extends JavaPlugin implements Listener {
 			p.sendMessage("[§6ChatBot§f] §a!help - List Commands");
 			p.sendMessage("[§6ChatBot§f] §a!staff - List of Staff members");
 			p.sendMessage("[§6ChatBot§f] §a!btc - Current Value of Bitcoins");
-			p.sendMessage("[§6ChatBot§f] §c!vip - List of online VIP's");
+			p.sendMessage("[§6ChatBot§f] §a!umad - Feeling a bit mad?");
+			p.sendMessage("[§6ChatBot§f] §a!vip - List of online VIP's");
 		}
 		
 		
@@ -134,6 +204,29 @@ public final class chatbot extends JavaPlugin implements Listener {
 	        }
 	        chat.setCancelled(true);
 		}
+		
+		
+		
+		if (message.equalsIgnoreCase("!vip")) {
+			String Servername = getConfig().getString("ServerName");
+			p.sendMessage("[§6ChatBot§f] §4List of VIP's on " + Servername);
+			int VipCount = this.VipList.values.size();
+			p.sendMessage("[§6ChatBot§f] §cVIP Count: " + VipCount);
+			for (Player p2: Bukkit.getServer().getOnlinePlayers()) {
+				if (p2.hasPermission(getConfig().getString("VIPpermission"))) {
+					if(!this.VipList.contains(p2.getName())){
+						this.VipList.add(p2.getName());
+						this.VipList.save();
+					}
+				}
+				for (String value : this.VipList.values) {
+					p.sendMessage("[§6ChatBot§f] §a- " + value);
+				}
+			}
+		}
+		
+		
+		
 		
 		if (message.equalsIgnoreCase("!umad")) {
 		 	// Browse a URL, say google.com
@@ -180,7 +273,7 @@ public boolean onCommand(CommandSender s, Command cmd, String label, String[] ar
 		
 	Player p = (Player) s;
 	p.sendMessage(ChatColor.RED + "Chatbot is up and working!");
-	p.sendMessage(ChatColor.GOLD + "Version: " + ChatColor.GREEN + "1.1");
+	p.sendMessage(ChatColor.GOLD + "Version: " + ChatColor.GREEN + "1.2");
 	p.sendMessage(ChatColor.GOLD + "Author: " + ChatColor.GREEN + ChatColor.ITALIC + "Niels1189");
 	p.sendMessage(ChatColor.GOLD + "Try using !help");
 	}
