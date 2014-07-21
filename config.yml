@@ -1,0 +1,32 @@
+# Default Config - Chat Bot
+# Author: Niels1189
+
+
+ServerName: this server
+
+# will check if players are online and display
+# a green color if online
+# a red color if offline
+CheckOnline: true
+
+# Staff List
+# If you use ranks like below, set to true.
+# Ranks are split with (only required if UseRanks is true)
+UseRanks: true
+SplitRanks: '|'
+
+
+# Want to use colors on the ranks?
+# Add this: \xa7b
+# WARNING: DO NOT ADD WITH USERNAMES!
+
+Staff:
+ - Dev     | Niels1189
+ 
+ 
+# Explanation
+# Dev | Niels1189 will turn into &6Dev | Niels1189 if UseRanks is false
+# Dev | Niels1189 will turn into &6Dev | &aNiels1189 if UseRanks is true & CheckOnline is true and Niels1189 is online
+# Dev | Niels1189 will turn into &6Dev | &cNiels1189 if UseRanks is true & CheckOnline is true and Niels1189 is offline
+# Dev | Niels1189 will turn into &cDev | Niels1189 if UseRanks is false & CheckOnline is true and Niels1189 is offline
+ 

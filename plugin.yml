@@ -1,0 +1,9 @@
+main: io.github.niels1189.chatbot.chatbot
+name: Chatbot
+version: 1.1
+author: Niels1189
+description: -no desc-
+
+commands:
+  chatbot:
+    description: Chatbot Version & Author
